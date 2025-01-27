@@ -1,0 +1,53 @@
+name: Build Express Server Artifact
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Build the server
+      - name: Build TypeScript server
+        run: npm run build # Ensure this runs `tsc` to generate the dist/ folder
+
+      # Step 5: Upload server artifact
+      - name: Upload server artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: express-server
+          path: |
+            dist/
+            package.json
+            package-lock.json
+            .env
+      # Step 6: Run tests and generate coverage report
+            - name: Run tests with coverage
+              run: npm run test:coverage
+
+      # Step 7: Upload coverage report as artifact
+            - name: Upload coverage report
+              uses: actions/upload-artifact@v3
+              with:
+                name: coverage-report
+                path: coverage/
