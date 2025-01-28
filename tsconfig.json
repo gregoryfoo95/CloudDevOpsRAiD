@@ -111,9 +111,7 @@
     "./jest/**/*",
     "./package.json",
     "./package-lock.json",
-    "jest.config.ts",
-    "./.env.ci",
-    "./src/prisma/schema.prisma"
+    "jest.config.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Define a route
 app.get("/", (req: Request, res: Response) => {
-  res.status(200).json("Hello, TypeScript with Express123");
+  res.status(200).json("Hello, TypeScript with Express");
 });
 
 process.env.NODE_ENV !== "test" &&
