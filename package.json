@@ -7,7 +7,6 @@
     "test": "jest",
     "test:coverage": "jest --coverage --passWithNoTests",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
-    "prepare": "husky",
     "format": "prettier --write ."
 
   },

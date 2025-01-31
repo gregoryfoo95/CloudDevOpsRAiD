@@ -218,5 +218,183 @@ Uploads the `dist/` directory as a downloadable artifact.
 
 ---
 
+# 3. Setting Up Docker 🐳
+
+## Prerequisites 📋
+Before starting, ensure you have:
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed 🖥️
+- Docker Engine running ⚙️
+
+## Installation Steps 📥
+
+### Step 1: Verify Docker Installation ✅
+```bash
+docker --version
+```
+
+### Step 2: Create Docker Configuration Files 📝
+
+#### Create Dockerfile 📄
+Create a `Dockerfile` in your project root:
+
+```dockerfile
+# Base image
+FROM node:18
+
+# Environment variables
+ENV SERVER_PORT=3001
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Install global packages
+RUN npm install -g nodemon
+
+# Expose port
+EXPOSE ${SERVER_PORT}
+
+# Start command
+CMD ["nodemon", "--watch", ".", "--legacy-watch", "server.ts"]
+```
+
+#### Create docker-compose.yml 📄
+Create a `docker-compose.yml` in your project root:
+
+```yaml
+version: "3.8"
+
+services:
+  # Database Service 🗄️
+  postgres:
+    image: postgres:15
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-myuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mypassword}
+      POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydatabase"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Application Service 🚀
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server_container
+    environment:
+      DATABASE_URL: postgres://myuser:mypassword@postgres:5432/mydatabase
+      NODE_ENV: development
+    ports:
+      - "${SERVER_PORT:-3001}:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+    working_dir: /app
+    command: bash -c "npm install && nodemon --watch . --legacy-watch server.ts"
+
+volumes:
+  postgres_data:
+    name: postgres_data
+```
+
+### Step 3: Running Docker Services 🚀
+
+#### Start Services
+```bash
+# Build and start containers & run in detached mode
+docker-compose up --build -d
+```
+
+#### Stop Services
+```bash
+docker-compose down
+```
+
+### Step 4: Verify Running Containers 🔍
+```bash
+# List running containers
+docker ps
+
+# View container logs
+docker-compose logs -f
+```
+
+## Docker Configuration Breakdown 📋
+
+### Dockerfile Explained 🔧
+- `FROM node:18`: Uses Node.js v18 as base image
+- `WORKDIR /app`: Sets working directory
+- `COPY package*.json ./`: Copies package files for dependency installation
+- `RUN npm install`: Installs dependencies
+- `EXPOSE ${SERVER_PORT}`: Exposes application port
+- `CMD ["nodemon", ...]`: Runs server with hot-reload
+
+### docker-compose.yml Explained 🔧
+- **Postgres Service** 🗄️
+  - Uses PostgreSQL 15
+  - Configurable through environment variables
+  - Persistent data storage
+  - Health checks for dependency management
+
+- **Server Service** 🚀
+  - Built from local Dockerfile
+  - Connected to PostgreSQL
+  - Volume mapping for live code updates
+  - Hot-reload enabled
+
+## Pro Tips 💡
+- Use `.dockerignore` to exclude unnecessary files 📝
+- Set up environment variables in `.env` file 🔐
+- Monitor container health with `docker stats` 📊
+- Use `docker-compose logs` for debugging 🔍
+
+## Troubleshooting 🔧
+
+### Common Issues and Solutions ⚠️
+
+1. **Port Conflicts** 🔌
+   ```bash
+   # Check ports in use
+   lsof -i :<port-number>
+   
+   # Kill process using port
+   kill $(lsof -t -i:<port-number>)
+   ```
+
+2. **Container Access** 🖥️
+   ```bash
+   # Access container shell
+   docker exec -it <container-name> bash
+   
+   # View container logs
+   docker logs <container-name>
+   ```
+
+3. **Volume Issues** 💾
+   ```bash
+   # List volumes
+   docker volume ls
+   
+   # Clean unused volumes
+   docker volume prune
+   ```
+
+---
+
+Happy Containerizing! 🎉
 With this setup, your TypeScript project will maintain high standards and efficient workflows. 🚀✨
 
