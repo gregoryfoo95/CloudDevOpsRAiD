@@ -152,7 +152,7 @@ jobs:
         run: npm run test:coverage
 
       - name: Upload coverage report 📊
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/
@@ -161,7 +161,7 @@ jobs:
         run: npm run build
 
       - name: Upload build artifacts 📤
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: dist/
