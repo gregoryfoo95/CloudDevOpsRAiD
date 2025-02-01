@@ -18,8 +18,8 @@ A comprehensive guide to setting up development tools and workflows for your Typ
 
 Before you begin, ensure you have:
 
-- [Node.js](https://nodejs.org/) (with npm) ⚙️  
-- Git 🌿  
+- [Node.js](https://nodejs.org/) (with npm) ⚙️
+- Git 🌿
 
 ---
 
@@ -112,9 +112,9 @@ git commit -m "Test commit"  # Test pre-commit hook
 
 ## Pro Tips 💡
 
-- Customize `.eslintrc.js` for your coding standards 📐  
-- Use Prettier with ESLint for consistent formatting ✨  
-- Keep Jest tests up-to-date 🧪  
+- Customize `.eslintrc.js` for your coding standards 📐
+- Use Prettier with ESLint for consistent formatting ✨
+- Keep Jest tests up-to-date 🧪
 
 ---
 
@@ -172,6 +172,7 @@ jobs:
 ## Workflow Breakdown 📋
 
 ### 1. Trigger Events 🎯
+
 - **Push**: Runs on pushes to the `main` branch.
 - **Pull Requests**: Runs on pull requests targeting `main`.
 
@@ -179,55 +180,65 @@ jobs:
 
 ### 2. Job Steps 📝
 
-#### Step 1: Checkout Code 📥  
+#### Step 1: Checkout Code 📥
+
 Clones the repository into the runner to access project files.
 
-#### Step 2: Node.js Setup ⚙️  
+#### Step 2: Node.js Setup ⚙️
+
 Installs Node.js (`v18`) using `actions/setup-node@v3`.
 
-#### Step 3: Install Dependencies 📦  
+#### Step 3: Install Dependencies 📦
+
 Runs `npm ci` for a clean installation based on `package-lock.json`.
 
-#### Step 4: Run Tests with Coverage 🧪  
+#### Step 4: Run Tests with Coverage 🧪
+
 Executes tests and generates a coverage report using `npm run test:coverage`.
 
-#### Step 5: Upload Coverage Report 📊  
+#### Step 5: Upload Coverage Report 📊
+
 Uploads the `coverage/` folder as a downloadable artifact.
 
-#### Step 6: Build Project 🏗️  
+#### Step 6: Build Project 🏗️
+
 Runs `npm run build` to generate production-ready assets in the `dist/` directory.
 
-#### Step 7: Upload Build Artifacts 📤  
+#### Step 7: Upload Build Artifacts 📤
+
 Uploads the `dist/` directory as a downloadable artifact.
 
 ---
 
 ### Benefits of This Workflow ✅
 
-1. **Automation**: Ensures code quality and builds are consistent with every push or pull request.  
-2. **Artifacts**: Provides downloadable coverage reports and built files for deployment or review.  
-3. **Reusability**: Centralized CI/CD pipeline setup saves time and effort.  
+1. **Automation**: Ensures code quality and builds are consistent with every push or pull request.
+2. **Artifacts**: Provides downloadable coverage reports and built files for deployment or review.
+3. **Reusability**: Centralized CI/CD pipeline setup saves time and effort.
 
 ---
 
 ### Next Steps 🔧
 
-1. Save the workflow file in `.github/workflows/build-and-save-artifacts.yml`.  
-2. Push code to see the workflow in action.  
-3. Review logs and artifacts under the **Actions** tab in GitHub.  
+1. Save the workflow file in `.github/workflows/build-and-save-artifacts.yml`.
+2. Push code to see the workflow in action.
+3. Review logs and artifacts under the **Actions** tab in GitHub.
 
 ---
 
 # 3. Setting Up Docker 🐳
 
 ## Prerequisites 📋
+
 Before starting, ensure you have:
+
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed 🖥️
 - Docker Engine running ⚙️
 
 ## Installation Steps 📥
 
 ### Step 1: Verify Docker Installation ✅
+
 ```bash
 docker --version
 ```
@@ -235,6 +246,7 @@ docker --version
 ### Step 2: Create Docker Configuration Files 📝
 
 #### Create Dockerfile 📄
+
 Create a `Dockerfile` in your project root:
 
 ```dockerfile
@@ -262,6 +274,7 @@ CMD ["nodemon", "--watch", ".", "--legacy-watch", "server.ts"]
 ```
 
 #### Create docker-compose.yml 📄
+
 Create a `docker-compose.yml` in your project root:
 
 ```yaml
@@ -314,17 +327,20 @@ volumes:
 ### Step 3: Running Docker Services 🚀
 
 #### Start Services
+
 ```bash
 # Build and start containers & run in detached mode
 docker-compose up --build -d
 ```
 
 #### Stop Services
+
 ```bash
 docker-compose down
 ```
 
 ### Step 4: Verify Running Containers 🔍
+
 ```bash
 # List running containers
 docker ps
@@ -336,6 +352,7 @@ docker-compose logs -f
 ## Docker Configuration Breakdown 📋
 
 ### Dockerfile Explained 🔧
+
 - `FROM node:18`: Uses Node.js v18 as base image
 - `WORKDIR /app`: Sets working directory
 - `COPY package*.json ./`: Copies package files for dependency installation
@@ -344,7 +361,9 @@ docker-compose logs -f
 - `CMD ["nodemon", ...]`: Runs server with hot-reload
 
 ### docker-compose.yml Explained 🔧
+
 - **Postgres Service** 🗄️
+
   - Uses PostgreSQL 15
   - Configurable through environment variables
   - Persistent data storage
@@ -357,6 +376,7 @@ docker-compose logs -f
   - Hot-reload enabled
 
 ## Pro Tips 💡
+
 - Use `.dockerignore` to exclude unnecessary files 📝
 - Set up environment variables in `.env` file 🔐
 - Monitor container health with `docker stats` 📊
@@ -367,28 +387,31 @@ docker-compose logs -f
 ### Common Issues and Solutions ⚠️
 
 1. **Port Conflicts** 🔌
+
    ```bash
    # Check ports in use
    lsof -i :<port-number>
-   
+
    # Kill process using port
    kill $(lsof -t -i:<port-number>)
    ```
 
 2. **Container Access** 🖥️
+
    ```bash
    # Access container shell
    docker exec -it <container-name> bash
-   
+
    # View container logs
    docker logs <container-name>
    ```
 
 3. **Volume Issues** 💾
+
    ```bash
    # List volumes
    docker volume ls
-   
+
    # Clean unused volumes
    docker volume prune
    ```
@@ -397,4 +420,3 @@ docker-compose logs -f
 
 Happy Containerizing! 🎉
 With this setup, your TypeScript project will maintain high standards and efficient workflows. 🚀✨
-
