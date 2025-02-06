@@ -8,7 +8,7 @@ A comprehensive guide to setting up development tools and workflows for your Typ
 
 1. [Setting Up Husky](#1-setting-up-husky-🐕)
 2. [GitHub Workflows](#2-github-workflows-🔄)
-3. [Setting up Docker](#3-setting-up-docker)
+3. [Setting up Docker](#3-setting-up-docker-🐳)
 
 ---
 
