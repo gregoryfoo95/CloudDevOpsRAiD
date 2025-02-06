@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+  # Database Service 🗄️
   postgres:
     image: postgres:15
     container_name: postgres_container
@@ -12,7 +13,13 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydatabase"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # Application Service 🚀
   server:
     build:
       context: .
@@ -20,10 +27,12 @@ services:
     container_name: server_container
     environment:
       DATABASE_URL: postgres://myuser:mypassword@postgres:5432/mydatabase
+      NODE_ENV: development
     ports:
-      - ${SERVER_PORT:-3001}:3001
+      - "${SERVER_PORT:-3001}:3001"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     volumes:
       - .:/app
       - /app/node_modules
@@ -32,3 +41,4 @@ services:
 
 volumes:
   postgres_data:
+    name: postgres_data

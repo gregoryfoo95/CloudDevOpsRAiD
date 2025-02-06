@@ -1,21 +1,21 @@
-# Use Node.js as the base image
+# Base image
 FROM node:18
 
-# Environment variable for the server port
+# Environment variables
 ENV SERVER_PORT=3001
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Install dependencies first to optimize builds
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Install nodemon globally for live reloading
+# Install global packages
 RUN npm install -g nodemon
 
-# Expose the application port
+# Expose port
 EXPOSE ${SERVER_PORT}
 
-# Start the server with nodemon
-CMD ["nodemon", "--watch", ".", "server.ts"]
+# Start command
+CMD ["nodemon", "--watch", ".", "--legacy-watch", "server.ts"]
