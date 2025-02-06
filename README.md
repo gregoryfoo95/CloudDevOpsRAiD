@@ -21,8 +21,8 @@ Start by forking the repository that already contains the Express and TypeScript
 2. Clone your forked repository to your local machine:
 
 ```bash
-git clone <your-forked-repo-url>
-cd <repository-name>
+git clone https://github.com/gregoryfoo95/CloudDevOpsRAiD.git
+cd CloudDevOpsRAiD
 ```
 
 3. Install the dependencies:
