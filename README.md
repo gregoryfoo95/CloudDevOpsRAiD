@@ -14,25 +14,6 @@ A comprehensive guide to setting up development tools and workflows for your Typ
 
 # 1. Setting Up Husky 🐕
 
-## Prerequisites 📋
-
-Before you begin, ensure you have:
-
-```bash
-git clone https://github.com/gregoryfoo95/CloudDevOpsRAiD.git
-cd CloudDevOpsRAiD
-```
-
-3. Install the dependencies:
-
-```bash
-npm install
-```
-
-Your project is now ready with a pre-configured Express and TypeScript setup. 📦
-
----
-
 ## Installation Steps 📥
 
 ### Step 1: Fork & Clone 🔄
